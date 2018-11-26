@@ -3,8 +3,8 @@
 #include "scene.h"
 #include <iostream>
 using namespace std;
-const int MAX_DEPTH = 1000;
-const int MIN_PRIMITIVE_NUM = 10;
+const int MAX_DEPTH = 100;
+const int MIN_PRIMITIVE_NUM = 8;
 
 
 void KDTree::Build(const Scene *pScene)
@@ -25,7 +25,7 @@ void KDTree::Build(const Scene *pScene)
 void KDTree::divide(const Scene *pScene, kdtreeNode *pNode, const AABB &box, const vector<int> &prims,int nDepth)
 {
 	pNode->m_Box = box;
-	if (nDepth >= MAX_DEPTH || prims.size() <= MIN_PRIMITIVE_NUM)
+	if (nDepth+1 >= MAX_DEPTH || prims.size() <= MIN_PRIMITIVE_NUM)
 	{
 		if (prims.size() > 0)
 		{
@@ -102,7 +102,6 @@ bool KDTree::FindNearestNode(const kdtreeNode *pNode, const Scene *pScene, const
 	if (NULL == pNode) return false;
 
 	Ray ray = r;
-	cout << pNode->m_Box.p1.x << endl;
 	AABB box = pNode->m_Box;
 	double tMin = 0, tMax = 0;
 	if (!box.ContainPoint(ray.o))
@@ -142,14 +141,160 @@ bool KDTree::FindNearestNode(const kdtreeNode *pNode, const Scene *pScene, const
 		return ret;
 	}
 
+	Vector3D o = ray.o;
+	Vector3D d = ray.d;
+	double boxW = box.w(), boxH = box.h(), boxD = box.d();
+	Vector3D size(boxW * 0.5, boxH * 0.5, boxD * 0.5), sizeInv;
+	sizeInv.x = 2.0 / boxW;
+	sizeInv.y = 2.0 / boxH;
+	sizeInv.z = 2.0 / boxD;
+	Vector3D cb, tmax, dt, cell = (o + d * EPSILON - box.p1) * sizeInv;
 
+	int stepX, outX, X = (int)cell.x;
+	int stepY, outY, Y = (int)cell.y;
+	int stepZ, outZ, Z = (int)cell.z;
 
-	int i = 2;
-	while (i > 0)
+	if (!(X > -1 && X < 2 && Y > -1 && Y < 2 && Z > -1 && Z < 2))
 	{
-		i--;
-		if (FindNearestNode(pNode->m_pChild[i], pScene, r, t, intersectNormal, intersectMaterial))
-			return true;
+		return false;
 	}
-	return false;
+
+	if (d.x > 0) { stepX = 1; outX = 2; cb.x = box.p1.x + (X + 1) * size.x; }
+	else { stepX = -1; outX = -1; cb.x = box.p1.x + (X)* size.x; }
+	if (d.y > 0) { stepY = 1; outY = 2; cb.y = box.p1.y + (Y + 1) * size.y; }
+	else { stepY = -1; outY = -1; cb.y = box.p1.y + (Y)* size.y; }
+	if (d.z > 0) { stepZ = 1; outZ = 2; cb.z = box.p1.z + (Z + 1) * size.z; }
+	else { stepZ = -1; outZ = -1; cb.z = box.p1.z + (Z)* size.z; }
+
+	double rxr, ryr, rzr;
+	if (d.x != 0) { rxr = 1.0 / d.x; tmax.x = (cb.x - o.x) * rxr; dt.x = size.x * stepX * rxr; }
+	else tmax.x = FLT_MAX;
+	if (d.y != 0) { ryr = 1.0 / d.y; tmax.y = (cb.y - o.y) * ryr; dt.y = size.y * stepY * ryr; }
+	else tmax.y = FLT_MAX;
+	if (d.z != 0) { rzr = 1.0 / d.z; tmax.z = (cb.z - o.z) * rzr; dt.z = size.z * stepZ * rzr; }
+	else tmax.z = FLT_MAX;
+
+
+	int one = 0, zero = 0;
+	while (true)
+	{
+		///////////////////////////////////启发式搜索
+		int pChild = 0;
+		bool judge = false;
+
+		/*if (pNode->level % 3 == 0) { ////讲道理，我觉得这样判断才比较合理，然而使用这段代码并不能渲染出场景。。。。。。。
+			if (X == 0) {
+				zero++;
+				pChild = 0;
+			}
+			else {
+				one++;
+				pChild = 1;
+			}
+		}
+		else if (pNode->level % 3 == 1) {
+			if (Y == 0) {
+				zero++;
+				pChild = 0;
+			}
+			else {
+				one++;
+				pChild = 1;
+			}
+		}
+		else if (pNode->level % 3 == 0) {
+			if (Z == 0) {
+				zero++;
+				pChild = 0;
+			}
+			else {
+				one++;
+				pChild = 1;
+			}
+		}*/
+
+
+		//////////////////////////////////////////////////我也不知道为什么需要这么判断，但只有这么判断才能渲染出场景，玄学
+		if (pNode->level % 3 == 0) {
+			if (Z == 0) {
+				zero++;
+				pChild = 0;
+			}
+			else {
+				one++;
+				pChild = 1;
+			}
+		}
+		else if (pNode->level % 3 == 1) {
+			if (X == 0) {
+				zero++;
+				pChild = 0;
+			}
+			else {
+				one++;
+				pChild = 1;
+			}
+		}
+		else if (pNode->level % 3 == 2) {
+			if (Y == 0) {
+				zero++;
+				pChild = 0;
+			}
+			else {
+				one++;
+				pChild = 1;
+			}
+		}
+		if (pChild == 0 && zero <= 1) { judge = true; }
+		else if (pChild == 1 && one <= 1) { judge = true; }
+
+		
+		if (judge&&FindNearestNode(pNode->m_pChild[pChild], pScene, r, t, intersectNormal, intersectMaterial))
+			return true;
+		
+
+		/*if (tmax.x < tmax.y)  //////使用这段代码 当ndepth 和 size 调至最大时，渲染场景时间大约需要2.5s 用下面未注释的代码约为2.6s 然而我还是觉得下面的代码更合理
+		{
+			if (tmax.x < tmax.z)
+			{
+				X = X + stepX;
+				if (X == outX) return false;
+				tmax.x += dt.x;
+			}
+			else
+			{
+				Z = Z + stepZ;
+				if (Z == outZ) return false;
+				tmax.z += dt.z;
+			}
+		}
+		else
+		{
+			if (tmax.y < tmax.z)
+			{
+				Y = Y + stepY;
+				if (Y == outY) return false;
+				tmax.y += dt.y;
+			}
+			else
+			{
+				Z = Z + stepZ;
+				if (Z == outZ) return false;
+				tmax.z += dt.z;
+			}
+		}*/
+		///////////////////////////////////////////////////////////这段代码 depth 和 size 调至最大值，渲染时间约为2.6s
+		if (pNode->level % 3 == 0) {
+			Z = Z + stepZ;
+			if (Z == outZ) return false;
+		}
+		else if (pNode->level % 3 == 1) {
+			X = X + stepX;
+			if (X == outX) return false;
+		}
+		else if (pNode->level % 3 == 2) {
+			Y = Y + stepY;
+			if (Y == outY) return false;
+		}
+	}
 }

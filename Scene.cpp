@@ -309,134 +309,49 @@ void Scene::InitScene()
 	primitive->SetMaterial(Materials[0]);
 	Primitives.push_back(primitive);
 
-	primitive = new Sphere(1.00541309370346, Point(-3.54574366132457, -0.17492679379549, -3.52529458175862));
+	primitive = new Sphere(1, Point(-3, 0, -3));
 	primitive->SetMaterial(Materials[1]);
 	Primitives.push_back(primitive);
 
-	primitive = new Sphere(0.85641051335839, Point(-1.58627809371627, -0.323929374140558, -4.74170030784273));
+
+	primitive = new Sphere(0.5, Point(-1, 0, -4));
 	primitive->SetMaterial(Materials[2]);
 	Primitives.push_back(primitive);
 
-	primitive = new Sphere(0.729490168751577, Point(0.367334190290388, -0.450849718747371, -4.97808947714315));
-	primitive->SetMaterial(Materials[3]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.62137946464292, Point(1.90825642044524, -0.558960422856028, -4.34040770674477));
-	primitive->SetMaterial(Materials[4]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.529290805578231, Point(2.79616722001328, -0.651049081920717, -3.22535244639666));
-	primitive->SetMaterial(Materials[5]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.450849718747371, Point(3.08727708634764, -0.729490168751577, -2.04351054609657));
+	
+	primitive = new Sphere(0.4, Point(3, 0, -2));
 	primitive->SetMaterial(Materials[6]);
 	Primitives.push_back(primitive);
 
-	primitive = new Sphere(0.384033629060538, Point(2.87749552687594, -0.79630625843841, -1.03397985245495));
+	primitive = new Sphere(0.3, Point(2, -0.7, -1));
 	primitive->SetMaterial(Materials[7]);
 	Primitives.push_back(primitive);
 
-	primitive = new Sphere(0.327119707780159, Point(2.3038390139185, -0.853220179718789, -0.365420603840839));
+	primitive = new Sphere(0.32, Point(2, -0.8, -0.3));
 	primitive->SetMaterial(Materials[7]);
 	Primitives.push_back(primitive);
 
-	primitive = new Sphere(0.278640450004206, Point(1.62028324058866, -0.901699437494742, -0.0513627603773734));
-	primitive->SetMaterial(Materials[9]);
-	Primitives.push_back(primitive);
 
-	primitive = new Sphere(0.237345835582382, Point(0.980258044388319, -0.942994051916566, -0.0170817450049947));
-	primitive->SetMaterial(Materials[10]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.202171097798072, Point(0.479437901391085, -0.978168789700877, -0.230635377721785));
-	primitive->SetMaterial(Materials[11]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.172209268743165, Point(0.167061568198127, -1.00813061875578, -0.574972810713355));
-	primitive->SetMaterial(Materials[12]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.146687793478156, Point(0.0237193138323233, -1.03365209402079, -0.944901788219927));
-	primitive->SetMaterial(Materials[13]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.124948609982087, Point(0.00719170920714229, -1.05539127751686, -1.28252032420256));
-	primitive->SetMaterial(Materials[14]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.106431181261041, Point(0.102680868181957, -1.07390870623791, -1.55352349783658));
-	primitive->SetMaterial(Materials[15]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0906580421042258, Point(0.261735710331161, -1.08968184539472, -1.74012705503053));
-	primitive->SetMaterial(Materials[16]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0772224878159845, Point(0.439777373377788, -1.10311739968296, -1.84983402675777));
-	primitive->SetMaterial(Materials[17]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0657780874821243, Point(0.610844296797831, -1.11456180001682, -1.9001169803364));
-	primitive->SetMaterial(Materials[18]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0560297513739306, Point(0.762545004027716, -1.12431013612502, -1.90861668696731));
-	primitive->SetMaterial(Materials[19]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.047726122166103, Point(0.888755933391988, -1.13261376533285, -1.88076213548416));
-	primitive->SetMaterial(Materials[20]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0406530937789168, Point(0.9863186922521, -1.13968679372003, -1.82952666174767));
-	primitive->SetMaterial(Materials[21]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0346282907302952, Point(1.05752509391536, -1.14571159676865, -1.76826751274224));
-	primitive->SetMaterial(Materials[22]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0294963656498814, Point(1.10705278593008, -1.15084352184907, -1.70537826566795));
+	primitive = new Sphere(2, Point(1, -1, -1));
 	primitive->SetMaterial(Materials[23]);
 	Primitives.push_back(primitive);
 
-	primitive = new Sphere(0.0251249937032075, Point(1.13990357379393, -1.15521489379574, -1.64559841234085));
-	primitive->SetMaterial(Materials[24]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0214014606436354, Point(1.16050002715239, -1.15893842685531, -1.59125267344645));
-	primitive->SetMaterial(Materials[25]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0182297565162216, Point(1.17240551144276, -1.16211013098273, -1.54319119252395));
-	primitive->SetMaterial(Materials[26]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0155281000757093, Point(1.17833716926224, -1.16481178742324, -1.50142841198435));
-	primitive->SetMaterial(Materials[27]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0132268300866599, Point(1.18029205596044, -1.16711305741229, -1.46554748174658));
-	primitive->SetMaterial(Materials[28]);
-	Primitives.push_back(primitive);
-
-	primitive = new Sphere(0.0112666091336598, Point(1.1793026802878, -1.16907327836529, -1.43496076279161));
+	primitive = new Sphere(0.1, Point(1.2, -1.1, -1.4));
 	primitive->SetMaterial(Materials[29]);
 	Primitives.push_back(primitive);
 
-	primitive = new Triangle(Point(-16, -1.18033988749895, -16), Point(-16, -1.18033988749895, 10), Point(14, -1.18033988749895, 10));
+	primitive = new Triangle(Point(-16, -1, -16), Point(-16, -1, 10), Point(14, -1, 10));
 	primitive->SetMaterial(Materials[30]);
 	Primitives.push_back(primitive);
 
-	primitive = new Triangle(Point(-16, -1.18033988749895, -16), Point(14, -1.18033988749895, 10), Point(14, -1.18033988749895, -16));
+	primitive = new Triangle(Point(-16, -1, -16), Point(14, -1, 10), Point(14, -1, -16));
 	primitive->SetMaterial(Materials[30]);
 	Primitives.push_back(primitive);
 
 	Matrix4x4 mtx;
 	mtx.Identity();
 	mtx = Mat4x4Scale(18, 18, 18) * Mat4x4RotateY(PI / 4) * Mat4x4Translate(-1.65, -2, 0.5);
-	LoadObjMesh("bunny_4.obj", Materials[2], mtx);
+	LoadObjMesh("bunny_1.obj", Materials[2], mtx);
 
 
 #pragma endregion
