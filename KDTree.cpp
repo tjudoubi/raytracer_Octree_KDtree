@@ -42,7 +42,7 @@ void KDTree::divide(const Scene *pScene, kdtreeNode *pNode, const AABB &box, con
 		double dy = box.h() / 2.0;
 		double dz = box.d() / 2.0;
 
-		//////////根据深度确定划定切分轴
+		//////////根据深度划定下一层的切分轴
 		if (nDepth % 3 == 0)
 		{
 			for (int k = 0; k < 2; k++)//////////////每个分支做一个轴对称绑定盒
